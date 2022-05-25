@@ -1,14 +1,20 @@
+# Case 1 - Vaga: Pesquisador Credenciado 
+# Empresa: Observatório SFIEC
+# Candidato: Rafael Vetromille
+# Assunto: Análise dos dados da COMEX (http://comexstat.mdic.gov.br/pt/home) para o estado do Ceará (2019 e 2021)
+
+# Carregar pacotes
 library(tidyverse)
 
-## ncm
+# NCM ()
 ncm <- readr::read_delim(file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM.csv', 
                          delim = ';', locale = locale(encoding = 'Latin1'), 
                          show_col_types = FALSE) %>%
   dplyr::select(CO_NCM, NO_NCM_POR)
 
-## Quais os top 10 produtos exportados pelo Ceará em 2019 e o desempenho do
-## comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
-## desses produtos?
+# Quais os top 10 produtos exportados pelo Ceará em 2019 e o desempenho do
+# comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
+# desses produtos?
 
 ## 2019
 exp_2019 <- readr::read_csv2(

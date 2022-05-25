@@ -10,10 +10,6 @@ library(tidyverse)
 # impacto da COVID-19 sobre o comércio internacional do Ceará em 2021 comparado a 2019.
 # Coube a você atender essa demanda!
 
-# A. Quais os top 10 produtos 'exportados' pelo Ceará em 2019 e o desempenho do
-# comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
-# desses produtos?
-
 # Como produto utilizei a seleção: NO_CUCI_GRUPO
 
 # NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
@@ -27,121 +23,92 @@ cuci <- rio::import(file = url2) %>%
   tibble::as_tibble() %>% 
   dplyr::select(CO_CUCI_ITEM, NO_CUCI_ITEM, NO_CUCI_GRUPO, )
 
-# Join (NCM & CUCI)
+# JOIN (NCM & CUCI)
 ncm <- ncm %>% 
   dplyr::left_join(
     cuci, by = 'CO_CUCI_ITEM'
   )
+
+# A.1. Quais os top 10 produtos 'exportados' pelo Ceará em 2019?
 
 # EXPORTAÇÕES 2019
 exp_2019 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2019.csv'
   )
 
-df1 <- dplyr::left_join(
-  
-  exp_2019 %>%
-    dplyr::filter(SG_UF_NCM == "CE") %>%
-    dplyr::group_by(CO_NCM) %>%
-    dplyr::summarise(across(
-      .cols = c(VL_FOB), .fns = sum
-    )) %>%
-    dplyr::arrange(desc(VL_FOB)) %>%
-    dplyr::mutate(
-      CO_NCM = as.numeric(CO_NCM),
-    ) %>%
-    dplyr::rename_with(
-      .cols = c(VL_FOB),
-      .fn = ~ paste0(.x, '_2019')
-    ),
-  
-  ncm,
-  
-  by = 'CO_NCM'
-  
-) %>% 
-  dplyr::select(
-    1, 2, 3, 17
-  ) %>% 
-  dplyr::group_by(
-    NO_CUCI_GRUPO
-  ) %>% 
-  dplyr::summarise(
-    VL_FOB_2019 = sum(VL_FOB_2019)
-  ) %>% 
+# BASE DE DADOS TRATADA (2019)
+df1 <- exp_2019 %>%
+  dplyr::filter(SG_UF_NCM == "CE") %>%
+  dplyr::group_by(CO_NCM) %>%
+  dplyr::summarise(across(.cols = c(VL_FOB), .fns = sum)) %>%
+  dplyr::arrange(desc(VL_FOB)) %>%
+  dplyr::mutate(CO_NCM = as.numeric(CO_NCM), ) %>%
+  dplyr::rename_with(.cols = c(VL_FOB), .fn = ~ paste0(.x, '_2019')) %>%
+  dplyr::left_join(ncm, by = 'CO_NCM') %>%
+  dplyr::select(1, 2, 3, 17) %>%
+  dplyr::group_by(NO_CUCI_GRUPO) %>%
+  dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019)) %>%
   dplyr::arrange(desc(VL_FOB_2019))
+
+# A.2. E o desempenho do comércio desses produtos em 2021?
 
 # EXPORTAÇÕES 2021
 exp_2021 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2021.csv'
 )
 
-df2 <- dplyr::left_join(
-  
-  exp_2021 %>%
-    dplyr::filter(SG_UF_NCM == "CE") %>%
-    dplyr::group_by(CO_NCM) %>%
-    dplyr::summarise(across(
-      .cols = c(VL_FOB), .fns = sum
-    )) %>%
-    dplyr::arrange(desc(VL_FOB)) %>%
-    dplyr::mutate(
-      CO_NCM = as.numeric(CO_NCM),
-    ) %>%
-    dplyr::rename_with(
-      .cols = c(VL_FOB),
-      .fn = ~ paste0(.x, '_2021')
-    ),
-  
-  ncm,
-  
-  by = 'CO_NCM'
-  
-) %>% 
-  dplyr::select(
-    1, 2, 3, 17
-  ) %>% 
-  dplyr::group_by(
-    NO_CUCI_GRUPO
-  ) %>% 
-  dplyr::summarise(
-    VL_FOB_2021 = sum(VL_FOB_2021)
-  ) %>% 
+# BASE DE DADOS TRATADA (2021)
+df2 <- exp_2021 %>%
+  dplyr::filter(SG_UF_NCM == "CE") %>%
+  dplyr::group_by(CO_NCM) %>%
+  dplyr::summarise(across(.cols = c(VL_FOB), .fns = sum)) %>%
+  dplyr::arrange(desc(VL_FOB)) %>%
+  dplyr::mutate(CO_NCM = as.numeric(CO_NCM), ) %>%
+  dplyr::rename_with(.cols = c(VL_FOB), .fn = ~ paste0(.x, '_2021')) %>%
+  dplyr::left_join(ncm, by = 'CO_NCM') %>%
+  dplyr::select(1, 2, 3, 17) %>%
+  dplyr::group_by(NO_CUCI_GRUPO) %>%
+  dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021)) %>%
   dplyr::arrange(desc(VL_FOB_2021))
 
-# Participação das Exportações por Atividade Econômica – 2019-2021
-# Atividade Econômica: Agropecuária, Indústria de Transformação, Indústria Extrativa & Outros Produtos
+# A.3. Houve uma queda ou crescimento nas exportações desses produtos?
 
-dplyr::full_join(
+df3 <- dplyr::bind_rows(
   
-  df1 %>% 
-    dplyr::group_by(NO_ISIC_SECAO) %>% 
-    dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019)),
+  dplyr::full_join(df1, df2, by = 'NO_CUCI_GRUPO') %>% 
+    dplyr::arrange(desc(VL_FOB_2021)) %>% 
+    dplyr::mutate(PART_2019 = VL_FOB_2019/sum(VL_FOB_2019, na.rm = T), .after = 'VL_FOB_2019') %>%
+    dplyr::mutate(PART_2021 = VL_FOB_2021/sum(VL_FOB_2021, na.rm = T), .after = 'VL_FOB_2021') %>%
+    dplyr::filter(row_number() %in% 1:10), 
   
-  df2 %>% 
-    dplyr::group_by(NO_ISIC_SECAO) %>% 
-    dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021)),
+  dplyr::full_join(df1, df2, by = 'NO_CUCI_GRUPO') %>% 
+    dplyr::arrange(desc(VL_FOB_2021)) %>% 
+    dplyr::mutate(PART_2019 = VL_FOB_2019/sum(VL_FOB_2019, na.rm = T), .after = 'VL_FOB_2019') %>%
+    dplyr::mutate(PART_2021 = VL_FOB_2021/sum(VL_FOB_2021, na.rm = T), .after = 'VL_FOB_2021') %>%
+    dplyr::filter(row_number() %in% 11:n()) %>% 
+    dplyr::summarise(across(where(is.numeric), .fns = ~sum(.x, na.rm = T))) %>%
+    dplyr::mutate(NO_CUCI_GRUPO = 'Demais Produtos', .before = everything())
   
-  by = 'NO_ISIC_SECAO'
-
 ) %>% 
-  dplyr::mutate(
-    PART_2019 = VL_FOB_2019/sum(VL_FOB_2019),
-    PART_2021 = VL_FOB_2021/sum(VL_FOB_2021)  
-    ) %>% 
-  dplyr::arrange(
-    desc(PART_2021)
+  dplyr::bind_rows(summarise(.,
+                             across(where(is.numeric), ~sum(.x, na.rm = TRUE)),
+                             across(where(is.character), ~"Ceará (Todos os produtos)"))) %>%  
+  dplyr::mutate(VAR_PERC  = (VL_FOB_2021 - VL_FOB_2019)/VL_FOB_2019) %>% 
+  dplyr::rename(
+    `Produto` = 1, 
+    `US$ 2019` = 2,
+    `Participação (%) 2019` = 3,
+    `US$ 2021` = 4,
+    `Participação (%) 2021` = 5,
+    `Variação Pecentual (2021/2019)` = 6,
   ) %>% 
-  janitor::adorn_totals(where = 'row', name = 'Ceará') %>% 
   dplyr::mutate(
-    VAR_PERCT = (VL_FOB_2021 - VL_FOB_2019)/VL_FOB_2019
-  ) %>%
-  dplyr::mutate(
-    across(.cols = 4:6, .fns = ~scales::percent(.x, accuracy = 0.01))
+    across(.cols = c(3,5,6), .fns = ~scales::percent(.x, accuracy = 0.01))
   ) 
 
-# B. Quais os top 10 produtos 'importados' pelo Ceará em 2019 e o desempenho do
-# comércio desses produtos em 2021, houve uma queda ou crescimento das importações
+
+
+# B.1. Quais os top 10 produtos 'importados' pelo Ceará em 2019? , houve uma queda ou crescimento das importações
 # desses produtos?
 
 # IMPORTAÇÕES 2019

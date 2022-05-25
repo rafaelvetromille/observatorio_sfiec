@@ -75,7 +75,7 @@ df2 <- exp_2021 %>%
 
 head(df2, 12) # oléo deixou de estar no top 10
 
-# A.3. Houve uma queda ou crescimento nas exportações desses produtos?
+# A.3. Houve uma queda ou crescimento nas exportações 'desses produtos'?
 
 df3 <- dplyr::bind_rows(
   
@@ -133,7 +133,7 @@ df4 <- imp_2019 %>%
 
 head(df4, 10)
 
-# B.2. E o desempenho do comércio desses produtos em 2021?
+# B.2. E o desempenho do comércio 'desses produtos' em 2021?
 
 # IMPORTAÇÕES 2021
 imp_2021 <- readr::read_csv2(
@@ -156,7 +156,7 @@ df5 <- imp_2021 %>%
 
 head(df5, 12)
 
-# B.3. Houve uma queda ou crescimento das importações desses produtos?
+# B.3. Houve uma queda ou crescimento das importações 'desses produtos'?
 
 df6 <- dplyr::bind_rows(
   
@@ -212,9 +212,9 @@ df7 <- exp_2019 %>%
   dplyr::select(-1) %>% 
   dplyr::relocate(2, 1)
 
-head(df7, 10) # por conta da Canadá
+head(df7, 10) # por conta da Canadá, ganhou posição de top 5 em 2021
   
-# C.2. Esses países perderam ou ganharam participação em 2021? - Parte 1
+# C.2. 'Esses países' perderam ou ganharam participação em 2021? - Parte 1
 
 # BASE DE DADOS TRATADA (2021) 
 df8 <- exp_2021 %>%
@@ -279,7 +279,7 @@ df10 <- imp_2019 %>%
 
 head(df10, 5)
 
-# D.2. Esses países perderam ou ganharam participação em 2021? - Parte 1
+# D.2. 'Esses países' perderam ou ganharam participação em 2021? - Parte 1
 
 df11 <- imp_2021 %>%
   dplyr::filter(SG_UF_NCM == "CE") %>%
@@ -293,7 +293,7 @@ df11 <- imp_2021 %>%
 
 head(df11, 6) # por conta da Rússia
 
-# D.2. Esses países perderam ou ganharam participação em 2021? - Parte 2
+# D.2. 'Esses países' perderam ou ganharam participação em 2021? - Parte 2
 
 df12 <- dplyr::bind_rows(
   

@@ -14,10 +14,24 @@ library(tidyverse)
 # comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
 # desses produtos?
 
+# Como produto utilizei a seleção: NO_CUCI_GRUPO
+
 # NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
-url <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/TABELAS_AUXILIARES.xlsx'
-ncm <- rio::import(file = url, which = 5) %>% 
-  dplyr::select(1,2,12,16)
+url1 <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM.csv'
+ncm <- rio::import(file = url1) %>% 
+  tibble::as_tibble()
+
+# CUCI (Classificação Uniforme do Comércio Internacional) - Nome mais geral dos produtos
+url2 <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM_CUCI.csv'
+cuci <- rio::import(file = url2) %>% 
+  tibble::as_tibble() %>% 
+  dplyr::select(CO_CUCI_ITEM, NO_CUCI_ITEM, NO_CUCI_GRUPO, )
+
+# Join 
+ncm <- ncm %>% 
+  dplyr::left_join(
+    cuci, by = 'CO_CUCI_ITEM'
+  )
 
 # EXPORTAÇÕES 2019
 exp_2019 <- readr::read_csv2(
@@ -34,6 +48,7 @@ df1 <- dplyr::left_join(
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(
+      CO_NCM = as.numeric(CO_NCM),
       PART_2019_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01)
     ) %>%
     dplyr::rename_with(
@@ -45,7 +60,10 @@ df1 <- dplyr::left_join(
   
   by = 'CO_NCM'
   
-)
+) %>% 
+  dplyr::select(
+    1, 2, 3, 18
+  )
 
 # EXPORTAÇÕES 2021
 exp_2021 <- readr::read_csv2(
@@ -194,7 +212,6 @@ dplyr::full_join(
   dplyr::mutate(
     across(.cols = 4:6, .fns = ~scales::percent(.x, accuracy = 0.01))
   ) 
-
 
 # C. Quais os top 5 destinos (países) dos produtos 'exportados' pelo Ceará em 2019? Esses
 # países perderam ou ganharam participação em 2021?

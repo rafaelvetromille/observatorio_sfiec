@@ -19,18 +19,16 @@ rais <- bd_collect(query_rais)
 # Pergunta 1: 
 # Em quais municípios a indústria de calçados mais emprega no estado do Ceará?
 
-dplyr::left_join(
+df1 <- dplyr::inner_join(
   
-  rais %>% 
-    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
+  geobr::read_municipality(),
+  
+  rais %>%
+    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
     dplyr::group_by(id_municipio) %>%
-    dplyr::summarise(n = dplyr::n()) %>% 
-    dplyr::top_n(10) %>% 
-    dplyr::rename(code_muni = id_municipio) %>% 
-    dplyr::mutate(code_muni = as.numeric(code_muni)) %>% 
-    dplyr::arrange(desc(n)), 
-  
-  geobr::read_municipality(), 
+    dplyr::summarise(n = dplyr::n()) %>%
+    dplyr::mutate(code_muni = as.numeric(id_municipio), .keep = 'unused', .before = dplyr::everything()) %>%
+    dplyr::arrange(dplyr::desc(n)),
   
   by = 'code_muni'
   
@@ -39,8 +37,10 @@ dplyr::left_join(
 # Pergunta 2: 
 # Qual a média salarial e número de empregados da indústria de calçados nestes municípios?
 
-dplyr::left_join(
-
+df2 <- dplyr::inner_join(
+  
+  geobr::read_municipality(),
+  
   rais %>%
     dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
     dplyr::group_by(id_municipio) %>%
@@ -49,32 +49,33 @@ dplyr::left_join(
       remuneracao_media = mean(valor_remuneracao_media, na.rm = TRUE)
     ) %>%
     dplyr::arrange(desc(n)) %>%
-    dplyr::rename(code_muni = id_municipio) %>%
-    dplyr::mutate(code_muni = as.numeric(code_muni)),
-  
-  geobr::read_municipality(),
-  
+    dplyr::mutate(code_muni = as.numeric(id_municipio), .keep = 'unused', .before = dplyr::everything()) %>% 
+    dplyr::arrange(desc(n)),
+    
   by = 'code_muni'
-
+  
 )
 
 # Pergunta 3:
 # Quais as principais ocupações empregadas no setor (indústria calçadista) e qual a média salarial delas?
 
-dplyr::left_join(
+df3 <- dplyr::left_join(
   
-  rais %>% 
-    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
+  rais %>%
+    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
     dplyr::group_by(cbo_2002) %>%
     dplyr::summarise(
-      n = dplyr::n(), 
+      n = dplyr::n(),
       remuneracao_media = mean(valor_remuneracao_media, na.rm = TRUE)
-    ) %>% 
+    ) %>%
     dplyr::arrange(desc(n)),
   
-  readr::read_delim(file = 'CBO2002 - Ocupacao.csv', delim = ';', 
-                    locale = locale(encoding = 'Latin1'), 
-                    show_col_types = FALSE) %>% 
+  readr::read_delim(
+    file = 'CBO2002 - Ocupacao.csv',
+    delim = ';',
+    locale = locale(encoding = 'Latin1'),
+    show_col_types = FALSE
+  ) %>%
     janitor::clean_names() %>%
     dplyr::rename(cbo_2002 = codigo, ocupacao = titulo),
   
@@ -85,22 +86,20 @@ dplyr::left_join(
 # Pergunta 4: 
 # O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
 
-dplyr::left_join(
+df4 <- dplyr::left_join(
   
-  rais %>% 
-    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
+  rais %>%
+    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
     dplyr::group_by(sexo) %>%
     dplyr::summarise(
-      n = dplyr::n(), 
+      n = dplyr::n(),
       remuneracao_media = mean(valor_remuneracao_media, na.rm = TRUE)
-    ) %>% 
-    dplyr::arrange(desc(n)), 
+    ) %>%
+    dplyr::arrange(desc(n)),
   
-  tribble(
-    ~ sexo, ~ sexo_nome, 
-    '1', 'Homem', 
-    '2', 'Mulher'
-  ), 
+  tribble( ~ sexo, ~ sexo_nome,
+           '1', 'Homem',
+           '2', 'Mulher'),
   
   by = 'sexo'
   
@@ -109,9 +108,7 @@ dplyr::left_join(
 # Pergunta 5: 
 # Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
 
-dic <- bdplyr('br_me_rais.dicionario') %>% bd_collect()
-
-dplyr::left_join(
+df5 <- dplyr::left_join(
   
   rais %>% 
     dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
@@ -122,9 +119,10 @@ dplyr::left_join(
     dplyr::arrange(dplyr::desc(n)) %>% 
     dplyr::rename(chave = grau_instrucao_apos_2005),
   
-  dic %<>% 
+  bdplyr('br_me_rais.dicionario') %>% 
+    bd_collect() %>% 
     dplyr::filter(nome_coluna == 'grau_instrucao_apos_2005') %>%
-    dplyr::select(grau_instrucao_apos_2005 = valor, chave),
+    dplyr::select(grau_instrucao = valor, chave),
   
   by = 'chave'
   

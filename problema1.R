@@ -1,7 +1,7 @@
 # Case - Pesquisador Credenciado 
 # Empresa: Observatório SFIEC
 # Candidato: Rafael Vetromille
-# Assunto: Dados da RAIS
+# Assunto: Análise dos dados da RAIS 2020 - CNAE 15.3 (Fabricação de calçados)
 
 # Carrega os pacotes
 library("basedosdados")

@@ -27,7 +27,7 @@ cuci <- rio::import(file = url2) %>%
   tibble::as_tibble() %>% 
   dplyr::select(CO_CUCI_ITEM, NO_CUCI_ITEM, NO_CUCI_GRUPO, )
 
-# Join 
+# Join (NCM & CUCI)
 ncm <- ncm %>% 
   dplyr::left_join(
     cuci, by = 'CO_CUCI_ITEM'
@@ -49,7 +49,6 @@ df1 <- dplyr::left_join(
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(
       CO_NCM = as.numeric(CO_NCM),
-      PART_2019_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01)
     ) %>%
     dplyr::rename_with(
       .cols = c(VL_FOB),
@@ -62,8 +61,15 @@ df1 <- dplyr::left_join(
   
 ) %>% 
   dplyr::select(
-    1, 2, 3, 18
-  )
+    1, 2, 3, 17
+  ) %>% 
+  dplyr::group_by(
+    NO_CUCI_GRUPO
+  ) %>% 
+  dplyr::summarise(
+    VL_FOB_2019 = sum(VL_FOB_2019)
+  ) %>% 
+  dplyr::arrange(desc(VL_FOB_2019))
 
 # EXPORTAÇÕES 2021
 exp_2021 <- readr::read_csv2(
@@ -80,7 +86,7 @@ df2 <- dplyr::left_join(
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(
-      PART_2021_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01)
+      CO_NCM = as.numeric(CO_NCM),
     ) %>%
     dplyr::rename_with(
       .cols = c(VL_FOB),
@@ -91,7 +97,17 @@ df2 <- dplyr::left_join(
   
   by = 'CO_NCM'
   
-)
+) %>% 
+  dplyr::select(
+    1, 2, 3, 17
+  ) %>% 
+  dplyr::group_by(
+    NO_CUCI_GRUPO
+  ) %>% 
+  dplyr::summarise(
+    VL_FOB_2021 = sum(VL_FOB_2021)
+  ) %>% 
+  dplyr::arrange(desc(VL_FOB_2021))
 
 # Participação das Exportações por Atividade Econômica – 2019-2021
 # Atividade Econômica: Agropecuária, Indústria de Transformação, Indústria Extrativa & Outros Produtos

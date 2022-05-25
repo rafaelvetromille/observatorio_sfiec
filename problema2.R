@@ -78,20 +78,39 @@ df2 <- dplyr::left_join(
 # Participação das Exportações por Atividade Econômica – 2019-2021
 # Atividade Econômica: Agropecuária, Indústria de Transformação, Indústria Extrativa & Outros Produtos
 
-df1 %>% 
-  dplyr::group_by(NO_ISIC_SECAO) %>% 
-  dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019))
+dplyr::full_join(
+  
+  df1 %>% 
+    dplyr::group_by(NO_ISIC_SECAO) %>% 
+    dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019)),
+  
+  df2 %>% 
+    dplyr::group_by(NO_ISIC_SECAO) %>% 
+    dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021)),
+  
+  by = 'NO_ISIC_SECAO'
 
-df2 %>% 
-  dplyr::group_by(NO_ISIC_SECAO) %>% 
-  dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021))
-
+) %>% 
+  dplyr::mutate(
+    PART_2019 = VL_FOB_2019/sum(VL_FOB_2019),
+    PART_2021 = VL_FOB_2021/sum(VL_FOB_2021)  
+    ) %>% 
+  dplyr::arrange(
+    desc(PART_2021)
+  ) %>% 
+  janitor::adorn_totals(where = 'row', name = 'Ceará') %>% 
+  dplyr::mutate(
+    VAR_PERCT = (VL_FOB_2021 - VL_FOB_2019)/VL_FOB_2019
+  ) %>%
+  dplyr::mutate(
+    across(.cols = 4:6, .fns = ~scales::percent(.x, accuracy = 0.01))
+  ) 
 
 # B. Quais os top 10 produtos 'importados' pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das importações
 # desses produtos?
 
-# IMP 2019
+# IMPORTAÇÕES 2019
 imp_2019 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/IMP_2019.csv'
 )
@@ -118,7 +137,7 @@ df3 <- dplyr::left_join(
   
 )
 
-# IMP 2021
+# IMPORTAÇÕES 2021
 imp_2021 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/IMP_2021.csv'
 )
@@ -148,13 +167,33 @@ df4 <- dplyr::left_join(
 # Participação das Exportações por Atividade Econômica – 2019-2021
 # Atividade Econômica: Agropecuária, Indústria de Transformação, Indústria Extrativa & Outros Produtos
 
-df3 %>% 
-  dplyr::group_by(NO_ISIC_SECAO) %>% 
-  dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019))
-
-df4 %>% 
-  dplyr::group_by(NO_ISIC_SECAO) %>% 
-  dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021))
+dplyr::full_join(
+  
+  df3 %>% 
+    dplyr::group_by(NO_ISIC_SECAO) %>% 
+    dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019)),
+  
+  df4 %>% 
+    dplyr::group_by(NO_ISIC_SECAO) %>% 
+    dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021)),
+  
+  by = 'NO_ISIC_SECAO'
+  
+) %>% 
+  dplyr::mutate(
+    PART_2019 = VL_FOB_2019/sum(VL_FOB_2019),
+    PART_2021 = VL_FOB_2021/sum(VL_FOB_2021)  
+  ) %>% 
+  dplyr::arrange(
+    desc(PART_2021)
+  ) %>% 
+  janitor::adorn_totals(where = 'row', name = 'Ceará') %>% 
+  dplyr::mutate(
+    VAR_PERCT = (VL_FOB_2021 - VL_FOB_2019)/VL_FOB_2019
+  ) %>%
+  dplyr::mutate(
+    across(.cols = 4:6, .fns = ~scales::percent(.x, accuracy = 0.01))
+  ) 
 
 
 # C. Quais os top 5 destinos (países) dos produtos 'exportados' pelo Ceará em 2019? Esses

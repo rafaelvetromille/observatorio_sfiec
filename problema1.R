@@ -97,9 +97,7 @@ df4 <- dplyr::left_join(
     ) %>%
     dplyr::arrange(desc(n)),
   
-  tribble( ~ sexo, ~ sexo_nome,
-           '1', 'Homem',
-           '2', 'Mulher'),
+  tribble(~sexo, ~sexo_nome, '1', 'Homem', '2', 'Mulher'),
   
   by = 'sexo'
   

@@ -17,7 +17,9 @@ query_rais <- bdplyr("br_me_rais.microdados_vinculos") %>%
 # Realizar o query
 rais <- bd_collect(query_rais) 
 
-## Em quais municípios a indústria de calçados mais emprega no estado do Ceará?
+# Pergunta 1: 
+# Em quais municípios a indústria de calçados mais emprega no estado do Ceará?
+
 dplyr::left_join(
   
   rais %>% 
@@ -35,7 +37,9 @@ dplyr::left_join(
   
 )
 
-## Qual a média salarial e número de empregados da indústria de calçados nestes municípios?
+# Pergunta 2: 
+# Qual a média salarial e número de empregados da indústria de calçados nestes municípios?
+
 dplyr::left_join(
 
   rais %>%
@@ -55,12 +59,12 @@ dplyr::left_join(
 
 )
 
-## Quais as principais ocupações empregadas no setor (indústria calçadista) e qual a média salarial delas?
+# Pergunta 3:
+# Quais as principais ocupações empregadas no setor (indústria calçadista) e qual a média salarial delas?
+
 dplyr::left_join(
   
   rais %>% 
-    dplyr::select(ano, sigla_uf, valor_remuneracao_media, 
-                  nacionalidade, tipo_vinculo, id_municipio, cnae_2, cbo_2002) %>%
     dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
     dplyr::group_by(cbo_2002) %>%
     dplyr::summarise(
@@ -79,14 +83,12 @@ dplyr::left_join(
   
 )
 
-## O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
+# Pergunta 4: 
+# O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
 
 dplyr::left_join(
   
   rais %>% 
-    dplyr::select(ano, sigla_uf, valor_remuneracao_media, 
-                  nacionalidade, tipo_vinculo, id_municipio, 
-                  cnae_2, cbo_2002, sexo) %>%
     dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
     dplyr::group_by(sexo) %>%
     dplyr::summarise(
@@ -96,7 +98,7 @@ dplyr::left_join(
     dplyr::arrange(desc(n)), 
   
   tribble(
-    ~sexo, ~sexo_nome, 
+    ~ sexo, ~ sexo_nome, 
     "1", "Homem", 
     "2", "Mulher"
   ), 
@@ -105,9 +107,10 @@ dplyr::left_join(
   
 )
 
-## Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
-dic <- bdplyr("br_me_rais.dicionario") %>% 
-  bd_collect()
+# Pergunta 5: 
+# Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
+
+dic <- bdplyr("br_me_rais.dicionario") %>% bd_collect()
 
 dplyr::left_join(
   

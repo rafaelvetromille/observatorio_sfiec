@@ -48,7 +48,6 @@ rais <- bd_collect(query_rais)
 
 # Pergunta 1: 
 # Em quais municípios a indústria de calçados mais emprega no estado do Ceará?
-
 df1 <- geobr::read_municipality(year = '2020') %>%
   dplyr::full_join(
     rais %>%
@@ -66,7 +65,6 @@ df1 <- geobr::read_municipality(year = '2020') %>%
   dplyr::filter(abbrev_state == 'CE')
 
 # Mapa 1 - Os munícipios que mais empregram no setor de calçados
-
 df1 %>%
   ggplot() +
   geom_sf(aes(fill = n)) +
@@ -88,7 +86,6 @@ df1 %>%
   tema_mapa 
 
 # Tabela 1 - Os 10 munícipios que mais empregram no setor de calçados
-
 df1 %>%
   tibble::as_tibble() %>% 
   dplyr::select(name_muni, n) %>% 
@@ -102,7 +99,6 @@ df1 %>%
 
 # Pergunta 2: 
 # Qual a média salarial e número de empregados da indústria de calçados nestes municípios?
-
 df2 <- geobr::read_municipality(year = '2020') %>%
   dplyr::full_join(
     rais %>%
@@ -124,7 +120,6 @@ df2 <- geobr::read_municipality(year = '2020') %>%
   dplyr::filter(abbrev_state == 'CE')
 
 # Mapa 2 - Média salarial dos municípios
-
 df2 %>%
   ggplot() +
   geom_sf(aes(fill = remuneracao_media)) +
@@ -146,7 +141,6 @@ df2 %>%
   tema_mapa
 
 # Tabela 2 - Remuneração média dos 10 municípios que mais empregram 
-
 df2 %>% 
   tibble::as_tibble() %>% 
   dplyr::select(name_muni, n, remuneracao_media) %>% 
@@ -162,7 +156,6 @@ df2 %>%
 
 # Pergunta 3:
 # Quais as principais ocupações empregadas no setor (indústria calçadista) e qual a média salarial delas?
-
 df3 <- rais %>%
   dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
   dplyr::group_by(cbo_2002) %>%
@@ -184,7 +177,6 @@ df3 <- rais %>%
   ) 
 
 # Tabela 3 - Quantidade e remuneração média por ocupação (10 maiores)
-
 df3 %>% 
   dplyr::select(4, 2, 3) %>% 
   dplyr::mutate(remuneracao_media = scales::dollar(remuneracao_media, prefix = 'R$ ', decimal.mark = ',')) %>% 
@@ -198,7 +190,6 @@ df3 %>%
   
 # Pergunta 4: 
 # O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
-
 df4 <- rais %>%
   dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
   dplyr::group_by(sexo) %>%
@@ -210,7 +201,6 @@ df4 <- rais %>%
   dplyr::left_join(tribble( ~ sexo, ~ sexo_nome, '1', 'Homem', '2', 'Mulher'), by = 'sexo')
 
 # Tabela 4 - Número de funcionário no setor, por sexo 
-
 df4 %>% 
   dplyr::select(sexo_nome, n, remuneracao_media) %>% 
   dplyr::rename(
@@ -225,7 +215,6 @@ df4 %>%
 
 # Pergunta 5: 
 # Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
-
 df5 <- rais %>%
   dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
   dplyr::group_by(grau_instrucao_apos_2005) %>%
@@ -259,7 +248,6 @@ df5 <- rais %>%
   )
 
 # Tabela 5 - Grau de instrução, quantidade de funcionários e média salarial
-
 df5 %>% 
   dplyr::mutate(remuneracao_media = scales::dollar(remuneracao_media, prefix = 'R$ ', decimal.mark = ',')) %>% 
   dplyr::select(4, 2, 3) %>% 

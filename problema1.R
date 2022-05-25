@@ -1,3 +1,12 @@
+# Case - Pesquisador Credenciado 
+# Empresa: Observatório SFIEC
+# Candidato: Rafael Vetromille
+# Assunto: Dados da RAIS
+
+# 1º problema – Recebemos uma demanda informacional do sindicado de produtos calçadistas
+# do Ceará, solicitando um relatório com informações sobre o setor no estado. Os solicitantes
+# buscam responder as seguintes perguntas:
+
 # Carrega os pacotes
 library("basedosdados")
 library("tidyverse")

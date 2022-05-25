@@ -6,15 +6,19 @@
 # Carregar pacotes
 library(tidyverse)
 
-# NCM (Nomenclatura Comum do Mercosul)
+# 2º problema - A presidência da FIEC solicitou ao Observatório da Indústria um relatório sobre o
+# impacto da COVID-19 sobre o comércio internacional do Ceará em 2021 comparado a 2019.
+# Coube a você atender essa demanda!
+
+# NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
 ncm <- readr::read_csv2(
-    file = 'https://tinyurl.com/38mksnjc',
+    file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM.csv',
     locale = locale(encoding = 'Latin1'),
     show_col_types = FALSE
   ) %>%
   dplyr::select(CO_NCM, NO_NCM_POR)
 
-# Quais os top 10 produtos exportados pelo Ceará em 2019 e o desempenho do
+# A. Quais os top 10 produtos exportados pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
 # desses produtos?
 
@@ -67,11 +71,11 @@ dplyr::left_join(
   
 )
 
-### Quais os top 10 produtos importados pelo Ceará em 2019 e o desempenho do
-### comércio desses produtos em 2021, houve uma queda ou crescimento das importações
-### desses produtos?
+# B. Quais os top 10 produtos importados pelo Ceará em 2019 e o desempenho do
+# comércio desses produtos em 2021, houve uma queda ou crescimento das importações
+# desses produtos?
 
-## 2019
+# 2019
 imp_2019 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/IMP_2019.csv'
 )
@@ -97,7 +101,7 @@ dplyr::left_join(
 )
 
 
-## 2021
+# 2021
 imp_2021 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/IMP_2021.csv'
 )
@@ -121,10 +125,13 @@ dplyr::left_join(
   
 )
 
-### Países
-paises <- readr::read_delim(file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/PAIS.csv', 
-                            delim = ';', locale = locale(encoding = 'Latin1'), 
-                            show_col_types = FALSE) %>% 
+# Países - Código dos países e nome
+paises <- readr::read_delim(
+    file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/PAIS.csv',
+    delim = ';',
+    locale = locale(encoding = 'Latin1'),
+    show_col_types = FALSE
+  ) %>%
   dplyr::select(CO_PAIS, NO_PAIS)
 
 

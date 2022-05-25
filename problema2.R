@@ -6,10 +6,12 @@
 # Carregar pacotes
 library(tidyverse)
 
-# NCM ()
-ncm <- readr::read_delim(file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM.csv', 
-                         delim = ';', locale = locale(encoding = 'Latin1'), 
-                         show_col_types = FALSE) %>%
+# NCM (Nomenclatura Comum do Mercosul)
+ncm <- readr::read_csv2(
+    file = 'https://tinyurl.com/38mksnjc',
+    locale = locale(encoding = 'Latin1'),
+    show_col_types = FALSE
+  ) %>%
   dplyr::select(CO_NCM, NO_NCM_POR)
 
 # Quais os top 10 produtos exportados pelo Ceará em 2019 e o desempenho do

@@ -24,10 +24,7 @@ cuci <- rio::import(file = url2) %>%
   dplyr::select(CO_CUCI_ITEM, NO_CUCI_ITEM, NO_CUCI_GRUPO)
 
 # JOIN (NCM & CUCI)
-ncm <- ncm %>% 
-  dplyr::left_join(
-    cuci, by = 'CO_CUCI_ITEM'
-  )
+ncm <- ncm %>% dplyr::left_join(cuci, by = 'CO_CUCI_ITEM')
 
 # A.1. Quais os top 10 produtos 'exportados' pelo Ceará em 2019?
 

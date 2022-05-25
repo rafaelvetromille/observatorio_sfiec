@@ -97,6 +97,31 @@ df1 %>%
   ) %>% 
   dplyr::filter(row_number() %in% 1:10)
 
+# Gráfico 1 - Os 10 munícipios que mais empregram no setor de calçados
+df1 %>%
+  tibble::as_tibble() %>% 
+  dplyr::select(name_muni, n) %>% 
+  tidyr::drop_na() %>% 
+  dplyr::arrange(desc(n)) %>% 
+  dplyr::rename(
+    `Nome do Município` = 1, 
+    `Quantidade de funcionários no setor` = 2
+  ) %>% 
+  dplyr::filter(row_number() %in% 1:10) %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = reorder(`Nome do Município`, `Quantidade de funcionários no setor`), 
+               y = `Quantidade de funcionários no setor`) +
+  ggplot2::geom_bar(stat = 'identity') +
+  ggplot2::coord_flip() +
+  ggplot2::theme_bw() +
+  ggplot2::labs(
+    title = "Quantidade de funcionários no setor de calçados, por município, CE",
+    subtitle = "Dados da RAIS, para o ano de 2020",
+    caption = "Fonte: RAIS",
+    y = "Qtd.",
+    x = "Municípios"
+  )
+
 # Pergunta 2: 
 # Qual a média salarial e número de empregados da indústria de calçados nestes municípios?
 df2 <- geobr::read_municipality(year = '2020') %>%
@@ -255,4 +280,50 @@ df5 %>%
     `Grau de Instrução` = 1, 
     `Qtd.` = 2, 
     `Remuneração Média (R$)` = 3
+  )
+
+# Gráfico 5 - Grau de instrução, quantidade de funcionários
+df5 %>%
+  dplyr::mutate(remuneracao_media = scales::dollar(
+    remuneracao_media,
+    prefix = 'R$ ',
+    decimal.mark = ','
+  )) %>%
+  dplyr::select(4, 2, 3) %>%
+  dplyr::rename(
+    `Grau de Instrução` = 1,
+    `Qtd.` = 2,
+    `Remuneração Média (R$)` = 3
+  ) %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = reorder(`Grau de Instrução`, `Qtd.`), y = `Qtd.`) +
+  ggplot2::geom_bar(stat = 'identity') +
+  ggplot2::coord_flip() +
+  ggplot2::theme_bw() +
+  ggplot2::labs(
+    fill = "R$",
+    title = "Grau de instrução no setor de calçados",
+    subtitle = "Dados da RAIS, para o ano de 2020",
+    caption = "Fonte: RAIS"
+  )
+
+# Gráfico 6 - Grau de instrução, remuneração média
+df5 %>%
+  dplyr::select(4, 2, 3) %>%
+  dplyr::rename(
+    `Grau de Instrução` = 1,
+    `Qtd.` = 2,
+    `Remuneração Média (R$)` = 3
+  ) %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = reorder(`Grau de Instrução`, -`Remuneração Média (R$)`), y = `Remuneração Média (R$)`) +
+  ggplot2::geom_bar(stat = 'identity') +
+  ggplot2::coord_flip() +
+  ggplot2::theme_bw() +
+  ggplot2::labs(
+    title = "Grau de instrução no setor de calçados & Remuneração Média",
+    subtitle = "Dados da RAIS, para o ano de 2020",
+    caption = "Fonte: RAIS",
+    y = "Remuneração Média (R$)",
+    x = "Grau de Instrução"
   )

@@ -22,7 +22,7 @@ ncm <- readr::read_csv2(
 # comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
 # desses produtos?
 
-# 2019
+# EXP 2019
 exp_2019 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2019.csv'
   )
@@ -31,16 +31,18 @@ df1 <- dplyr::left_join(
   
   exp_2019 %>%
     dplyr::filter(SG_UF_NCM == "CE") %>%
-    dplyr::mutate(DATE = lubridate::make_date(year = CO_ANO, month = CO_MES)) %>%
     dplyr::group_by(CO_NCM) %>%
     dplyr::summarise(across(
       .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
-    dplyr::mutate(PART_2019_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01), 
-                  PART_2019_KG  = scales::percent(KG_LIQUIDO / sum(KG_LIQUIDO), 0.01)) %>%
+    dplyr::mutate(
+      PART_2019_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01),
+      PART_2019_KG  = scales::percent(KG_LIQUIDO / sum(KG_LIQUIDO), 0.01)
+    ) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fn = ~paste0(.x, '_2019')
+      .cols = c(KG_LIQUIDO, VL_FOB),
+      .fn = ~ paste0(.x, '_2019')
     ),
   
   ncm,
@@ -49,32 +51,36 @@ df1 <- dplyr::left_join(
   
 )
 
-
-## 2021
+# EXP 2021
 exp_2021 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2021.csv'
 )
 
-dplyr::left_join(
+df2 <- dplyr::left_join(
   
-  exp_2021 %>% 
-    dplyr::filter(SG_UF_NCM == "CE") %>% 
-    dplyr::mutate(DATE = lubridate::make_date(year = CO_ANO, month = CO_MES)) %>% 
-    dplyr::group_by(CO_NCM) %>% 
-    dplyr::summarise(
-      across(.cols = c(KG_LIQUIDO, VL_FOB), .fns = sum)
-    ) %>% 
-    dplyr::arrange(desc(VL_FOB)) %>% 
-    dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>% 
-    dplyr::rename_with(.cols = c(KG_LIQUIDO, VL_FOB), .fn = ~paste0(.x, '_2021')), 
+  exp_2021 %>%
+    dplyr::filter(SG_UF_NCM == "CE") %>%
+    dplyr::group_by(CO_NCM) %>%
+    dplyr::summarise(across(
+      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+    )) %>%
+    dplyr::arrange(desc(VL_FOB)) %>%
+    dplyr::mutate(
+      PART_2021_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01),
+      PART_2021_KG  = scales::percent(KG_LIQUIDO / sum(KG_LIQUIDO), 0.01)
+    ) %>%
+    dplyr::rename_with(
+      .cols = c(KG_LIQUIDO, VL_FOB),
+      .fn = ~ paste0(.x, '_2021')
+    ),
   
-  ncm, 
+  ncm,
   
   by = 'CO_NCM'
   
 )
 
-# B. Quais os top 10 produtos importados pelo Ceará em 2019 e o desempenho do
+# B. Quais os top 10 produtos 'importados' pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das importações
 # desses produtos?
 

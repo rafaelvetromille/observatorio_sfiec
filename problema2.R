@@ -11,12 +11,8 @@ library(tidyverse)
 # Coube a você atender essa demanda!
 
 # NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
-ncm <- readr::read_csv2(
-    file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM.csv',
-    locale = locale(encoding = 'Latin1'),
-    show_col_types = FALSE
-  ) %>%
-  dplyr::select(CO_NCM, NO_NCM_POR)
+ncm <- rio::import(file = url, which = 5) %>% 
+  dplyr::select(1,2,12,16)
 
 # A. Quais os top 10 produtos 'exportados' pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
@@ -33,15 +29,14 @@ df1 <- dplyr::left_join(
     dplyr::filter(SG_UF_NCM == "CE") %>%
     dplyr::group_by(CO_NCM) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(
-      PART_2019_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01),
-      PART_2019_KG  = scales::percent(KG_LIQUIDO / sum(KG_LIQUIDO), 0.01)
+      PART_2019_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01)
     ) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2019')
     ),
   
@@ -62,15 +57,14 @@ df2 <- dplyr::left_join(
     dplyr::filter(SG_UF_NCM == "CE") %>%
     dplyr::group_by(CO_NCM) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(
-      PART_2021_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01),
-      PART_2021_KG  = scales::percent(KG_LIQUIDO / sum(KG_LIQUIDO), 0.01)
+      PART_2021_FOB = scales::percent(VL_FOB / sum(VL_FOB), 0.01)
     ) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2021')
     ),
   
@@ -96,15 +90,14 @@ df3 <- dplyr::left_join(
     dplyr::mutate(DATE = lubridate::make_date(year = CO_ANO, month = CO_MES)) %>%
     dplyr::group_by(CO_NCM) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2019')
     ),
-  
   
   ncm,
   
@@ -124,12 +117,12 @@ df4 <- dplyr::left_join(
     dplyr::mutate(DATE = lubridate::make_date(year = CO_ANO, month = CO_MES)) %>%
     dplyr::group_by(CO_NCM) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
     dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2021')
     ),
   
@@ -159,12 +152,12 @@ df5 <- left_join(
     dplyr::filter(SG_UF_NCM == "CE") %>%
     dplyr::group_by(CO_PAIS) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
-    dplyr::arrange(desc(KG_LIQUIDO)) %>%
-    dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
+    dplyr::arrange(desc(VL_FOB)) %>%
+    dplyr::mutate(PART_2019 = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2019')
     ),
   
@@ -174,19 +167,19 @@ df5 <- left_join(
   
 )
 
-### EXP 2021
+# EXP 2021
 df6 <- left_join(
   
   exp_2021 %>%
     dplyr::filter(SG_UF_NCM == "CE") %>%
     dplyr::group_by(CO_PAIS) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
-    dplyr::arrange(desc(KG_LIQUIDO)) %>%
-    dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
+    dplyr::arrange(desc(VL_FOB)) %>%
+    dplyr::mutate(PART_2021 = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2021')
     ),
   
@@ -196,23 +189,39 @@ df6 <- left_join(
   
 )
 
+# Esses países perderam ou ganharam participação nas exportações de 2021?
+
+df7 <- dplyr::full_join(df5, df6) %>% 
+  dplyr::arrange(desc(VL_FOB_2021)) %>% 
+  dplyr::relocate(NO_PAIS, .after = CO_PAIS) %>% 
+  dplyr::relocate(VL_FOB_2021, .after = VL_FOB_2019) %>% 
+  dplyr::mutate(VAR_PERC = scales::percent((VL_FOB_2021 - VL_FOB_2019)/VL_FOB_2019, accuracy = 0.01)) %>% 
+  dplyr::rename(
+    `Código País` = 1, 
+    `Nome País` = 2, 
+    `US$ 2019` = 3, 
+    `US$ 2021` = 4,
+    `Participação (%) 2019` = 5,
+    `Participação (%) 2021` = 6,
+    `Variação Pecentual (2021/2019)` = 7,
+  )
+
 # Quais as top 5 origens (países) dos produtos 'importados' pelo Ceará em 2019? Esses
 # países perderam ou ganharam participação em 2021?
 
 # IMP 2019
 
-df7 <- left_join(
+df8 <- left_join(
   
   imp_2019 %>%
     dplyr::filter(SG_UF_NCM == "CE") %>%
     dplyr::group_by(CO_PAIS) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
-    dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2019')
     ),
   
@@ -222,21 +231,19 @@ df7 <- left_join(
   
 )
 
+# IMP 2021
 
-### IMP 2021
-
-df8 <- left_join(
+df9 <- left_join(
   
   imp_2021 %>%
     dplyr::filter(SG_UF_NCM == "CE") %>%
     dplyr::group_by(CO_PAIS) %>%
     dplyr::summarise(across(
-      .cols = c(KG_LIQUIDO, VL_FOB), .fns = sum
+      .cols = c(VL_FOB), .fns = sum
     )) %>%
     dplyr::arrange(desc(VL_FOB)) %>%
-    dplyr::mutate(PART = scales::percent(VL_FOB / sum(VL_FOB), 0.01)) %>%
     dplyr::rename_with(
-      .cols = c(KG_LIQUIDO, VL_FOB),
+      .cols = c(VL_FOB),
       .fn = ~ paste0(.x, '_2021')
     ),
   
@@ -245,3 +252,76 @@ df8 <- left_join(
   by = 'CO_PAIS'
   
 )
+
+# Esses países perderam ou ganharam participação nas importações de 2021?
+
+df10 <- dplyr::bind_rows(
+  
+  dplyr::full_join(df8, df9, by = c('CO_PAIS', 'NO_PAIS')) %>% 
+    dplyr::arrange(desc(VL_FOB_2021)) %>% 
+    dplyr::relocate(NO_PAIS, .after = CO_PAIS) %>% 
+    dplyr::relocate(VL_FOB_2021, .after = VL_FOB_2019) %>% 
+    dplyr::mutate(PART_2019 = VL_FOB_2019/sum(VL_FOB_2019, na.rm = T),
+                  PART_2021 = VL_FOB_2021/sum(VL_FOB_2021, na.rm = T)) %>% 
+    dplyr::filter(row_number() %in% 1:5), 
+  
+  dplyr::full_join(df8, df9, by = c('CO_PAIS', 'NO_PAIS')) %>% 
+    dplyr::arrange(desc(VL_FOB_2021)) %>% 
+    dplyr::relocate(NO_PAIS, .after = CO_PAIS) %>% 
+    dplyr::relocate(VL_FOB_2021, .after = VL_FOB_2019) %>% 
+    dplyr::mutate(PART_2019 = VL_FOB_2019/sum(VL_FOB_2019, na.rm = T),
+                  PART_2021 = VL_FOB_2021/sum(VL_FOB_2021, na.rm = T)) %>% 
+    dplyr::filter(row_number() %in% 6:n()) %>% 
+    dplyr::summarise(across(where(is.numeric), .fns = ~sum(.x, na.rm = T))) %>%
+    dplyr::mutate(CO_PAIS = 'Demais Países', NO_PAIS = 'Demais Países', .before = everything())
+  
+) %>% 
+  dplyr::bind_rows(summarise(.,
+                             across(where(is.numeric), ~sum(.x, na.rm = TRUE)),
+                             across(where(is.character), ~"Ceará"))) %>%  
+  dplyr::mutate(VAR_PERC  = (VL_FOB_2021 - VL_FOB_2019)/VL_FOB_2019) %>% 
+  dplyr::rename(
+    `Código País` = 1, 
+    `Nome País` = 2, 
+    `US$ 2019` = 3, 
+    `US$ 2021` = 4,
+    `Participação (%) 2019` = 5,
+    `Participação (%) 2021` = 6,
+    `Variação Pecentual (2021/2019)` = 7,
+  ) %>% 
+  dplyr::select(-1) %>% 
+  dplyr::mutate(
+    across(.cols = 4:6, .fns = ~scales::percent(.x, accuracy = 0.01))
+  ) 
+  
+
+# Taxa de crescimento (%) das exportações
+df9 <- dplyr::full_join(
+  df1, df2, by = c('CO_NCM', 'NO_NCM_POR')
+) %>% 
+  dplyr::relocate(where(is.numeric), .after = 'CO_NCM') %>% 
+  dplyr::relocate(NO_NCM_POR, .after = 'CO_NCM') %>% 
+  dplyr::relocate(PART_2019_KG, .before = dplyr::last_col()) %>% 
+  dplyr::relocate(starts_with('KG'), .after = 2)
+
+# Taxa de crescimento (%) das importações
+df10 <- dplyr::full_join(
+  df3, df4, by = c('CO_NCM', 'NO_NCM_POR')
+) %>% 
+  dplyr::relocate(where(is.numeric), .after = 'CO_NCM') %>% 
+  dplyr::relocate(NO_NCM_POR, .after = 'CO_NCM') %>% 
+  dplyr::relocate(PART_2019_KG, .before = dplyr::last_col()) %>% 
+  dplyr::relocate(starts_with('KG'), .after = 2)
+
+
+# Produtos (Setor)
+
+url <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/TABELAS_AUXILIARES.xlsx'
+
+
+
+
+
+
+
+

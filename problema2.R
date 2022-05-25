@@ -10,16 +10,16 @@ library(tidyverse)
 # impacto da COVID-19 sobre o comércio internacional do Ceará em 2021 comparado a 2019.
 # Coube a você atender essa demanda!
 
-
 # A. Quais os top 10 produtos 'exportados' pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
 # desses produtos?
 
 # NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
+url <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/TABELAS_AUXILIARES.xlsx'
 ncm <- rio::import(file = url, which = 5) %>% 
   dplyr::select(1,2,12,16)
 
-# EXP 2019
+# EXPORTAÇÕES 2019
 exp_2019 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2019.csv'
   )
@@ -47,7 +47,7 @@ df1 <- dplyr::left_join(
   
 )
 
-# EXP 2021
+# EXPORTAÇÕES 2021
 exp_2021 <- readr::read_csv2(
   file = 'https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2021.csv'
 )
@@ -74,6 +74,18 @@ df2 <- dplyr::left_join(
   by = 'CO_NCM'
   
 )
+
+# Participação das Exportações por Atividade Econômica – 2019-2021
+# Atividade Econômica: Agropecuária, Indústria de Transformação, Indústria Extrativa & Outros Produtos
+
+df1 %>% 
+  dplyr::group_by(NO_ISIC_SECAO) %>% 
+  dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019))
+
+df2 %>% 
+  dplyr::group_by(NO_ISIC_SECAO) %>% 
+  dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021))
+
 
 # B. Quais os top 10 produtos 'importados' pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das importações
@@ -132,6 +144,18 @@ df4 <- dplyr::left_join(
   by = 'CO_NCM'
   
 )
+
+# Participação das Exportações por Atividade Econômica – 2019-2021
+# Atividade Econômica: Agropecuária, Indústria de Transformação, Indústria Extrativa & Outros Produtos
+
+df3 %>% 
+  dplyr::group_by(NO_ISIC_SECAO) %>% 
+  dplyr::summarise(VL_FOB_2019 = sum(VL_FOB_2019))
+
+df4 %>% 
+  dplyr::group_by(NO_ISIC_SECAO) %>% 
+  dplyr::summarise(VL_FOB_2021 = sum(VL_FOB_2021))
+
 
 # C. Quais os top 5 destinos (países) dos produtos 'exportados' pelo Ceará em 2019? Esses
 # países perderam ou ganharam participação em 2021?

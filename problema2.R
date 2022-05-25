@@ -10,13 +10,14 @@ library(tidyverse)
 # impacto da COVID-19 sobre o comércio internacional do Ceará em 2021 comparado a 2019.
 # Coube a você atender essa demanda!
 
-# NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
-ncm <- rio::import(file = url, which = 5) %>% 
-  dplyr::select(1,2,12,16)
 
 # A. Quais os top 10 produtos 'exportados' pelo Ceará em 2019 e o desempenho do
 # comércio desses produtos em 2021, houve uma queda ou crescimento das exportações
 # desses produtos?
+
+# NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
+ncm <- rio::import(file = url, which = 5) %>% 
+  dplyr::select(1,2,12,16)
 
 # EXP 2019
 exp_2019 <- readr::read_csv2(

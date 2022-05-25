@@ -1,4 +1,4 @@
-# Case - Pesquisador Credenciado 
+# Case 1 - Vaga: Pesquisador Credenciado 
 # Empresa: Observatório SFIEC
 # Candidato: Rafael Vetromille
 # Assunto: Análise dos dados da RAIS 2020 para o estado do Ceará - Setor: Indústria Calçadista

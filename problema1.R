@@ -25,7 +25,6 @@ rais <- bd_collect(query_rais)
 # do Ceará, solicitando um relatório com informações sobre o setor no estado. Os solicitantes
 # buscam responder as seguintes perguntas:
 
-
 # Pergunta 1: 
 # Em quais municípios a indústria de calçados mais emprega no estado do Ceará?
 

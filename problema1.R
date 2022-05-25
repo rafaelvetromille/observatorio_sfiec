@@ -2,13 +2,12 @@
 library("basedosdados")
 library("tidyverse")
 library("geobr")
-library("pdftools")
 
 # Defina o seu projeto no Google Cloud
-set_billing_id("observatoriosfiec")
+set_billing_id('observatoriosfiec')
 
 # Para carregar o dado direto no R
-query_rais <- bdplyr("br_me_rais.microdados_vinculos") %>%
+query_rais <- bdplyr('br_me_rais.microdados_vinculos') %>%
   dplyr::filter(ano == 2020, sigla_uf == "CE") %>% 
   dplyr::select(ano, sigla_uf, valor_remuneracao_media, 
                 nacionalidade, tipo_vinculo, id_municipio, 
@@ -79,7 +78,7 @@ dplyr::left_join(
     janitor::clean_names() %>%
     dplyr::rename(cbo_2002 = codigo, ocupacao = titulo),
   
-  by = "cbo_2002"
+  by = 'cbo_2002'
   
 )
 
@@ -99,8 +98,8 @@ dplyr::left_join(
   
   tribble(
     ~ sexo, ~ sexo_nome, 
-    "1", "Homem", 
-    "2", "Mulher"
+    '1', 'Homem', 
+    '2', 'Mulher'
   ), 
   
   by = 'sexo'
@@ -110,14 +109,11 @@ dplyr::left_join(
 # Pergunta 5: 
 # Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
 
-dic <- bdplyr("br_me_rais.dicionario") %>% bd_collect()
+dic <- bdplyr('br_me_rais.dicionario') %>% bd_collect()
 
 dplyr::left_join(
   
   rais %>% 
-    dplyr::select(ano, sigla_uf, valor_remuneracao_media, 
-                  nacionalidade, tipo_vinculo, id_municipio, 
-                  cnae_2, cbo_2002, sexo, grau_instrucao_apos_2005) %>%
     dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
     dplyr::group_by(grau_instrucao_apos_2005) %>%
     dplyr::summarise(
@@ -127,7 +123,7 @@ dplyr::left_join(
     dplyr::rename(chave = grau_instrucao_apos_2005),
   
   dic %<>% 
-    dplyr::filter(nome_coluna == "grau_instrucao_apos_2005") %>%
+    dplyr::filter(nome_coluna == 'grau_instrucao_apos_2005') %>%
     dplyr::select(grau_instrucao_apos_2005 = valor, chave),
   
   by = 'chave'

@@ -3,10 +3,6 @@
 # Candidato: Rafael Vetromille
 # Assunto: Dados da RAIS
 
-# 1º problema – Recebemos uma demanda informacional do sindicado de produtos calçadistas
-# do Ceará, solicitando um relatório com informações sobre o setor no estado. Os solicitantes
-# buscam responder as seguintes perguntas:
-
 # Carrega os pacotes
 library("basedosdados")
 library("tidyverse")
@@ -21,9 +17,14 @@ query_rais <- bdplyr('br_me_rais.microdados_vinculos') %>%
   dplyr::select(ano, sigla_uf, valor_remuneracao_media, 
                 nacionalidade, tipo_vinculo, id_municipio, 
                 cnae_2, cbo_2002, sexo, grau_instrucao_apos_2005) 
-  
+
 # Realizar o query
 rais <- bd_collect(query_rais) 
+
+# 1º problema – Recebemos uma demanda informacional do sindicado de produtos calçadistas
+# do Ceará, solicitando um relatório com informações sobre o setor no estado. Os solicitantes
+# buscam responder as seguintes perguntas:
+
 
 # Pergunta 1: 
 # Em quais municípios a indústria de calçados mais emprega no estado do Ceará?

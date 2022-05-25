@@ -10,14 +10,14 @@ library(tidyverse)
 # impacto da COVID-19 sobre o comércio internacional do Ceará em 2021 comparado a 2019.
 # Coube a você atender essa demanda!
 
-# Como produto utilizei a seleção: NO_CUCI_GRUPO
+# IPC: Como produto utilizei a seleção: NO_CUCI_GRUPO!
 
 # NCM (Nomenclatura Comum do Mercosul) - Código dos produtos
 url1 <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM.csv'
 ncm <- rio::import(file = url1) %>% 
   tibble::as_tibble()
 
-# CUCI (Classificação Uniforme do Comércio Internacional) - Nome mais geral dos produtos
+# CUCI (Classificação Uniforme do Comércio Internacional) - Nome mais geral p/ os produtos
 url2 <- 'https://balanca.economia.gov.br/balanca/bd/tabelas/NCM_CUCI.csv'
 cuci <- rio::import(file = url2) %>% 
   tibble::as_tibble() %>% 
@@ -193,7 +193,7 @@ df6 <- dplyr::bind_rows(
 
 # C.1. Quais os top 5 destinos (países) dos produtos 'exportados' pelo Ceará em 2019? 
 
-# Países - Código dos países e nome
+# CÓDIGO DOS PAÍSES E NOME
 paises <- readr::read_delim(
   file = 'https://balanca.economia.gov.br/balanca/bd/tabelas/PAIS.csv',
   delim = ';',

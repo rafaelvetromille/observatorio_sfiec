@@ -183,7 +183,7 @@ df3 <- rais %>%
     by = 'cbo_2002'
   ) 
 
-# Tabela 3 - Quantidade e remuneração média por ocupação
+# Tabela 3 - Quantidade e remuneração média por ocupação (10 maiores)
 
 df3 %>% 
   dplyr::select(4, 2, 3) %>% 
@@ -199,22 +199,15 @@ df3 %>%
 # Pergunta 4: 
 # O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
 
-df4 <- dplyr::left_join(
-  
-  rais %>%
-    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
-    dplyr::group_by(sexo) %>%
-    dplyr::summarise(
-      n = dplyr::n(),
-      remuneracao_media = mean(valor_remuneracao_media, na.rm = TRUE)
-    ) %>%
-    dplyr::arrange(desc(n)),
-  
-  tribble(~sexo, ~sexo_nome, '1', 'Homem', '2', 'Mulher'),
-  
-  by = 'sexo'
-  
-)
+df4 <- rais %>%
+  dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
+  dplyr::group_by(sexo) %>%
+  dplyr::summarise(
+    n = dplyr::n(),
+    remuneracao_media = mean(valor_remuneracao_media, na.rm = TRUE)
+  ) %>%
+  dplyr::arrange(desc(n)) %>%
+  dplyr::left_join(tribble( ~ sexo, ~ sexo_nome, '1', 'Homem', '2', 'Mulher'), by = 'sexo')
 
 # Tabela 4 - Número de funcionário no setor, por sexo 
 
@@ -233,30 +226,22 @@ df4 %>%
 # Pergunta 5: 
 # Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
 
-df5 <- dplyr::left_join(
-  
-  rais %>% 
-    dplyr::filter(stringr::str_detect(cnae_2, '153')) %>% 
-    dplyr::group_by(grau_instrucao_apos_2005) %>%
-    dplyr::summarise(
-      n = dplyr::n(),
-      remuneracao_media = mean(valor_remuneracao_media, na.rm = T)
-    ) %>% 
-    dplyr::arrange(dplyr::desc(n)) %>% 
-    dplyr::rename(chave = grau_instrucao_apos_2005),
-  
-  bdplyr('br_me_rais.dicionario') %>% 
-    bd_collect() %>% 
-    dplyr::filter(nome_coluna == 'grau_instrucao_apos_2005') %>%
-    dplyr::select(grau_instrucao = valor, chave),
-  
-  by = 'chave'
-  
-)
-
-# Tabela 5 - Grau de instrução, quantidade e média salarial
-
-df5 %>% 
+df5 <- rais %>%
+  dplyr::filter(stringr::str_detect(cnae_2, '153')) %>%
+  dplyr::group_by(grau_instrucao_apos_2005) %>%
+  dplyr::summarise(
+    n = dplyr::n(),
+    remuneracao_media = mean(valor_remuneracao_media, na.rm = T)
+  ) %>%
+  dplyr::arrange(dplyr::desc(n)) %>%
+  dplyr::rename(chave = grau_instrucao_apos_2005) %>%
+  dplyr::left_join(
+    bdplyr('br_me_rais.dicionario') %>%
+      bd_collect() %>%
+      dplyr::filter(nome_coluna == 'grau_instrucao_apos_2005') %>%
+      dplyr::select(grau_instrucao = valor, chave),
+    by = 'chave'
+  ) %>% 
   dplyr::mutate(
     grau_instrucao = case_when(
       grau_instrucao == 'MEDIO COMPL' ~ 'Ensino Médio Completo', 
@@ -271,7 +256,11 @@ df5 %>%
       grau_instrucao == 'MESTRADO' ~ 'Mestrado', 
       grau_instrucao == 'DOUTORADO' ~ 'Doutorado'
     )
-  ) %>%
+  )
+
+# Tabela 5 - Grau de instrução, quantidade de funcionários e média salarial
+
+df5 %>% 
   dplyr::mutate(remuneracao_media = scales::dollar(remuneracao_media, prefix = 'R$ ', decimal.mark = ',')) %>% 
   dplyr::select(4, 2, 3) %>% 
   dplyr::rename(

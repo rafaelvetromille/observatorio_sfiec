@@ -227,6 +227,7 @@ df8 <- exp_2021 %>%
 head(df8, 5)
 
 # C.2. Esses países perderam ou ganharam participação em 2021? - Parte 2
+# c/ taxa de crescimento (%) das exportações
 
 df9 <- dplyr::bind_rows(
   
@@ -291,6 +292,7 @@ df11 <- imp_2021 %>%
 head(df11, 6) # por conta da Rússia
 
 # D.2. 'Esses países' perderam ou ganharam participação em 2021? - Parte 2
+# c/ taxa de crescimento (%) das importações
 
 df12 <- dplyr::bind_rows(
   

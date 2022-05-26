@@ -95,8 +95,7 @@ df1 %>%
     `Nome do Município` = 1, 
     `Quantidade de funcionários no setor` = 2
   ) %>% 
-  dplyr::filter(row_number() %in% 1:10) %>% 
-  stargazer::stargazer(summary = FALSE, rownames = FALSE)
+  dplyr::filter(row_number() %in% 1:10)
 
 # Gráfico 1 - Os 10 munícipios que mais empregram no setor de calçados
 df1 %>%
@@ -178,8 +177,7 @@ df2 %>%
     `Quantidade de funcionários no setor` = 2, 
     `Remuneração Média (R$)` = 3 
   ) %>% 
-  dplyr::filter(row_number() %in% 1:10) %>% 
-  stargazer::stargazer(summary = FALSE, rownames = FALSE)
+  dplyr::filter(row_number() %in% 1:10)
 
 # Pergunta 3:
 # Quais as principais ocupações empregadas no setor (indústria calçadista) e qual a média salarial delas?
@@ -213,8 +211,7 @@ df3 %>%
     `Qtd.` = 2, 
     `Remuneração Média (R$)` = 3
   ) %>% 
-  dplyr::filter(row_number() %in% 1:10) %>% 
-  stargazer::stargazer(summary = FALSE, rownames = FALSE)
+  dplyr::filter(row_number() %in% 1:10)
   
 # Pergunta 4: 
 # O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
@@ -313,8 +310,7 @@ df5 %>%
     `Grau de Instrução` = 1, 
     `Qtd.` = 2, 
     `Remuneração Média (R$)` = 3
-  ) %>% 
-  stargazer::stargazer(summary = FALSE, rownames = FALSE)
+  )
 
 # Gráfico 5 - Grau de instrução, quantidade de funcionários
 df5 %>%

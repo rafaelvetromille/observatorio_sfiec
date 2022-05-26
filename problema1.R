@@ -95,7 +95,8 @@ df1 %>%
     `Nome do Município` = 1, 
     `Quantidade de funcionários no setor` = 2
   ) %>% 
-  dplyr::filter(row_number() %in% 1:10)
+  dplyr::filter(row_number() %in% 1:10) %>% 
+  stargazer::stargazer(summary = FALSE, rownames = FALSE)
 
 # Gráfico 1 - Os 10 munícipios que mais empregram no setor de calçados
 df1 %>%
@@ -177,7 +178,8 @@ df2 %>%
     `Quantidade de funcionários no setor` = 2, 
     `Remuneração Média (R$)` = 3 
   ) %>% 
-  dplyr::filter(row_number() %in% 1:10)
+  dplyr::filter(row_number() %in% 1:10) %>% 
+  stargazer::stargazer(summary = FALSE, rownames = FALSE)
 
 # Pergunta 3:
 # Quais as principais ocupações empregadas no setor (indústria calçadista) e qual a média salarial delas?
@@ -211,7 +213,8 @@ df3 %>%
     `Qtd.` = 2, 
     `Remuneração Média (R$)` = 3
   ) %>% 
-  dplyr::filter(row_number() %in% 1:10)
+  dplyr::filter(row_number() %in% 1:10) %>% 
+  stargazer::stargazer(summary = FALSE, rownames = FALSE)
   
 # Pergunta 4: 
 # O setor (indústria calçadista) emprega mais homens ou mulheres e qual a média salarial deles?
@@ -237,6 +240,30 @@ df4 %>%
                              across(.cols = 2, ~sum(.x, na.rm = TRUE)),
                              across(where(is.character), ~"Total"), 
                              across(.cols = 3, ~mean(.x, na.rm = TRUE))))
+
+# Gráfico 2 - Número de funcionário no setor, por sexo 
+df4 %>% 
+  dplyr::select(sexo_nome, n, remuneracao_media) %>% 
+  dplyr::rename(
+    `Sexo` = 1, 
+    `Qtd.` = 2, 
+    `Remuneração Média (R$)` = 3
+  ) %>% 
+  dplyr::bind_rows(summarise(.,
+                             across(.cols = 2, ~sum(.x, na.rm = TRUE)),
+                             across(where(is.character), ~"Total"), 
+                             across(.cols = 3, ~mean(.x, na.rm = TRUE)))) %>% 
+  ggplot2::ggplot() + 
+  ggplot2::aes(x = reorder(`Sexo`, -`Qtd.`), y = `Qtd.`) +
+  ggplot2::geom_bar(stat = 'identity') + 
+  ggplot2::theme_bw() +
+  ggplot2::labs(
+    title = "Quantidade de funcionários, por sexo, no setor calçadista, CE",
+    subtitle = "Dados da RAIS, para o ano de 2020",
+    caption = "Fonte: RAIS", 
+    x = ""
+  )
+  
 
 # Pergunta 5: 
 # Qual o nível de escolaridade dos empregados neste setor (indústria calçadista)?
@@ -273,14 +300,21 @@ df5 <- rais %>%
   )
 
 # Tabela 5 - Grau de instrução, quantidade de funcionários e média salarial
-df5 %>% 
+df5 %>%
+  tibble::add_row(
+    chave = NA, 
+    n     = sum(df2$n, na.rm = T), 
+    remuneracao_media = mean(df2$remuneracao_media, na.rm = T), 
+    grau_instrucao = 'Total'
+  ) %>% 
   dplyr::mutate(remuneracao_media = scales::dollar(remuneracao_media, prefix = 'R$ ', decimal.mark = ',')) %>% 
   dplyr::select(4, 2, 3) %>% 
   dplyr::rename(
     `Grau de Instrução` = 1, 
     `Qtd.` = 2, 
     `Remuneração Média (R$)` = 3
-  )
+  ) %>% 
+  stargazer::stargazer(summary = FALSE, rownames = FALSE)
 
 # Gráfico 5 - Grau de instrução, quantidade de funcionários
 df5 %>%

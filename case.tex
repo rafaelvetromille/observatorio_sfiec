@@ -1,0 +1,289 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\linespread{1.3}
+\parskip=12pt
+\parindent=0pt
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsfonts, tabularx}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{placeins}
+\usepackage{caption} 
+\captionsetup[table]{skip=10pt}
+
+
+% Defining the question styles
+\theoremstyle{definition}
+\newtheorem{prob}{Problema}
+
+% Custom commands
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Prob}{\mathbb{P}}
+
+% declare a new theorem style
+\newtheoremstyle{solution}%
+{1pt}% Space above
+{1pt}% Space below 
+{\itshape\color{red}}% Body font
+{}% Indent amount
+{\bfseries\color{red}}% Theorem head font
+{.}% Punctuation after theorem head
+{.5em}% Space after theorem head
+{}% Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{solution}
+\newtheorem*{solution}{Solution}
+
+% --- Code starts here ---
+\begin{document}
+	\begin{center}
+		{\Large{\textbf{Case 1 - Vaga: Pesquisador Credenciado}}}\\
+		\vspace{0.2cm}
+		Assunto: Análise dos dados da RAIS 2020 para o estado do Ceará - Setor: Indústria Calçadista\\
+		Candidato: Rafael Vetromille
+	\end{center}
+	
+\begin{prob}
+A análise dos dados da RAIS 2020 para a indústria calçadista cearense nos permite avaliar a dinâmica e importância desse mercado. Primeiramente, podemos avaliar os municípios que a indústria de calçados mais emprega. A Tabela \ref{tab1} evidencia esse resultados.
+
+% Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
+% Date and time: qua, mai 25, 2022 - 13:54:56
+\begin{table}[!htbp] \centering 
+  \caption{Número de funcionários, indústria calçadista, por municípios do Ceará}
+  \label{tab1} 
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} c}
+\hline 
+Nome do Município & Quantidade de funcionários no setor \\ 
+\hline 
+Sobral & 15888 \\ 
+Horizonte & 10672 \\ 
+Quixeramobim & 5292 \\ 
+Morada Nova & 4466 \\ 
+Itapipoca & 3719 \\ 
+Fortaleza & 2894 \\ 
+Santa Quitéria & 2602 \\ 
+Crato & 2502 \\ 
+Juazeiro Do Norte & 2319 \\ 
+Brejo Santo & 2280 \\ 
+\hline
+\end{tabular*} 
+\begin{flushleft}
+\footnotesize Fonte: RAIS, 2020
+\end{flushleft}
+\end{table} 
+
+A Tabela \ref{tab1} representa os 10 principais municípios empregadores da indústria calçadista. O município de Sobral destaca-se como o município com maior número de funcionários nessa indústria. Seguido por Horizonte, Quixeramobim, Morada Nova e os demais municípios. O Gráfico \ref{fig1} a seguir representa a dispersão dos municípios no estado do Ceará.
+
+\begin{figure}[htp!]
+\centering
+\includegraphics[scale=0.37]{graph1.png}
+\caption{Número de funcionários no setor de calçados, por município, CE}
+\label{fig1}
+\end{figure}%%
+\newpage
+É possível notar que a maioria dos municípios empregadores da indústria calçadistas são aqueles ao redor de Fortaleza (capital). Além disso, podemos notar também que dos 184 municípios cearenses, 44 são produtores de calçados, isto representa que aproximadamente 24\% dos municípios cearenses são produtores de calçados. Na Tabela \ref{tab2} temos a remuneração média para os dez principais municípios produtores de calçados. O município de Sobral, como sendo o principal empregador da indústria calçadista, também é aquele que tem a maior remuneração média. Ressalta-se a importância de Fortaleza como sendo 
+o segundo município com maior remuneração média, apesar de relativamente poucos trabalhadores no setor.
+
+\begin{table}[!htbp] \centering 
+  \caption{Remuneração Média, por município, CE} 
+  \label{tab2} 
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} c @{\extracolsep{\fill}} r}
+\hline
+Nome do município & Quantidade de funcionários no setor & Remuneração Média (R\$) \\ 
+\hline 
+Sobral & 15888 & R\$ 1 188,44 \\ 
+Horizonte & 10672 & R\$ 1 181,28 \\ 
+Quixeramobim & 5292 & R\$ 928,91 \\ 
+Morada Nova & 4466 & R\$ 1 091,14 \\ 
+Itapipoca & 3719 & R\$ 1 083,11 \\ 
+Fortaleza & 2894 & R\$ 1 186,88 \\ 
+Santa Quitéria & 2602 & R\$ 1 115,31 \\ 
+Crato & 2502 & R\$ 1 187,86 \\ 
+Juazeiro Do Norte & 2319 & R\$ 933,66 \\ 
+Brejo Santo & 2280 & R\$ 1 011,50 \\ 
+\hline 
+\end{tabular*} 
+\begin{flushleft}
+\footnotesize Fonte: RAIS, 2020
+\end{flushleft}
+\end{table} \vspace{-0.5cm}
+
+As principais ocupações desse setor podem ser verificadas na Tabela \ref{tab3}. A ocupação dominante, com quase 30 mil funcionários, é a de trabalhadores polivalentes que são aqueles trabalhadores que atuam em várias áreas, de maneira rotativa, sem uma tarefa fixa. Em segundo lugar, encontra-se a ocupação de costurador, profissão muito importante nesse setor.
+
+\begin{table}[!htbp] \centering 
+  \caption{Principais ocupações empregadores e remuneração média, CE} 
+  \label{tab3} 
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} c @{\extracolsep{\fill}} r}
+\hline
+Ocupação & Qtd. & Remuneração Média (R\$) \\ 
+\hline 
+Trabalhador polivalente da confecção de calçados & 29979 & R\$ 963,72 \\ 
+Costurador de calçados, a  máquina & 6926 & R\$ 984,25 \\ 
+Preparador de calçados & 6856 & R\$ 882,16 \\ 
+Alimentador de linha de produção & 6717 & R\$ 1 001,40 \\ 
+Sapateiro (calçados sob medida) & 3606 & R\$ 1 047,40 \\ 
+Moldador de plástico por injeção & 2669 & R\$ 960,84 \\ 
+Supervisor  (indústria de calçados e artefatos de couro) & 1441 & R\$ 2 818,51 \\ 
+Almoxarife & 1307 & R\$ 1 157,33 \\ 
+Montador de calçados & 1081 & R\$ 873,21 \\ 
+Acabador de calçados & 1036 & R\$ 1 003,82 \\ 
+\hline
+\end{tabular*} 
+\begin{flushleft}
+\footnotesize Fonte: RAIS, 2020
+\end{flushleft}
+\end{table}
+
+\newpage
+
+Em relação à divisão entre trabalhadores homens ou mulheres, a indústria calçadista do Ceará emprega mais homens do que mulheres, com os homens representando, aproximadamente, 55\% ($\sim$40 mil) da mão de obra total desse setor. O Gráfico \ref{fig2} representa essa dinâmica em mais detalhes. Em relação à remuneração média, os homens nesse setor recebem, em média, R\$ 1182,00 enquanto que as mulheres ganham, em média, R\$ 1011,00 (RAIS, 2020).
+\begin{figure}[htp!]
+\centering
+\includegraphics[scale=0.35]{graph2.png}
+\caption{Quantidade de funcionários, por sexo, setor de calçadista, CE}
+\label{fig2}
+\end{figure} \vspace{-0.2cm}
+
+Por fim, podemos analisar a dispersão dos funcionários do setor de calçados do Ceará sob a ótimo do grau de instrução. A maioria dos funcionários da indústria calçadista cearense possuem ensino médio completo ($\sim$62\%) e possuem uma remuneração média de R\$ 1043,45. A Tabela \ref{tab4} apresenta esse resultado para os demais graus de instrução. Destaca-se a baixa participação de mestres e doutores nesse setor.
+
+\begin{table}[!htbp] \centering 
+  \caption{Grau de instrução e Remuneração média} 
+  \label{tab4} 
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{\fill}} r}
+\hline 
+Grau de Instrução & Qtd. & Remuneração Média (R\$) \\ 
+\hline
+Ensino Médio Completo & 45094 & R\$ 1 043,45 \\ 
+Ensimo Médio Incompleto & 8027 & R\$ 1 001,00 \\ 
+Fundamental Completo & 6509 & R\$ 1 012,26 \\ 
+De 6º ao 9º do Ensino Fundamental & 4871 & R\$ 967,36 \\ 
+Até 5º ano Incompleto & 2210 & R\$ 1 051,92 \\ 
+Ensino Superior Incompleto & 2184 & R\$ 1 616,72 \\ 
+Ensio Superior Completo & 1748 & R\$ 3 452,72 \\ 
+Até o 5º Completo & 1237 & R\$ 1 023,20 \\ 
+Analfabeto & 314 & R\$ 1 001,49 \\ 
+Mestrado & 4 & R\$ 8 598,76 \\ 
+Doutorado & 2 & R\$ 8 542,44 \\ 
+Total (Ceará) & 72200 & R\$ 1 062,20 \\ 
+\hline
+\end{tabular*} 
+\begin{flushleft}
+\footnotesize Fonte: RAIS, 2020
+\end{flushleft}
+\end{table} 
+
+\end{prob}
+
+\newpage
+
+
+	\begin{center}
+		{\Large{\textbf{Case 1 - Vaga: Pesquisador Credenciado}}}\\
+		\vspace{0.2cm}
+		Assunto: Análise dos dados da COMEX para o estado do Ceará (2019 e 2021)\\
+		Candidato: Rafael Vetromille
+	\end{center}
+	
+	
+	\begin{prob} 
+	
+No ano de 2021, o valor das exportações do Ceará foi de U\$\$ 2,74 bilhões, representando um crescimento de 20,39\% em relação ao ano de 2019 (pré-pandemia). As importações cearenses de 2021 totalizaram U\$\$ 3,87, isso representou um aumento de 64,17\% em relação ao ano de 2019. Como resultado, a balança comercial apresentou deficit de U\$\$ 1,13 bilhão. \vspace{-0.5cm}
+
+\subsubsection*{Exportações Cearenses}
+
+A análise das exportações cearenses nos permite identificar os principais produtos exportados pelo estado, assim como verificar sua evolução comparativa nos anos de 2019 e 2021. No estado, em 2019, os principais produtos exportados consistiam em produtos semi-acabados, lingotes e outras formas primárias de ferro ou aço (51,64\%), calçados (10,38\%), geradores elétricos giratórios e suas partes (8,05\%), frutas e nozes (7,07\%), outras gorduras e óleos animais ou vegetais (3,03\%), suco de frutas ou de vegetais (2,53\%), crustáceos (2,52\%), couro (2,30\%), óleos combustíveis de petróleo ou de minerais betuminoso (1,51\%), tecidos de algodão (1,41\%) e, por fim, demais produtos agregados (9,57\%). É possível notar que mais de 50\% das exportações cearenses são constituídas de produtos metalúrgicos. No ano de 2021, a participação de apenas algumas produtos aumentaram, são eles: produtos metalúrgicos (35,06\%), frutas e nozes (4,87\%), crustáceos (8,74\%), tecidos de algodão (46,76\%). Além disso, os demais produtos aumentaram sua participação em 33,57\%. 
+
+Os principais países de destino dessas exportações no ano de 2019 foram os Estados Unidos (44,56\%), México (7,43\%), Coreia do Sul (5,68\%), Itália (5,35\%), Alemanha (2,87\%), os demais países representaram 34,09\% do total de exportações. Já no ano de 2021, além dos países anteriores, o Canadá (3,22\%) passou a figurar entre os principais países de destino das exportações cearenses, saindo da 9ª posição para 3ª em 2021, substituindo a posição da Coreia do Sul, agora em 4º. Estados Unidos e México ganharam participação nas exportações entre os anos de 2019 e 2021 e se mantiveram no top 5 países de destino, em primeiro e segundo lugar, respectivamente. Por fim, Itália perdeu posição e foi substituída pela Coreia do Sul (4º posição), assim como Alemanha que foi substituída pela Argentina (5º posição).
+
+
+
+
+\subsubsection*{Importações Cearenses}
+	
+Pelo lado das importações, em 2019, os principais produtos importados pelo estado eram carvão (18,07\%), óleos combustíveis (14,25\%), trigo e centeio (9,24\%), gás natural (5,20\%), compostos organo-inorgânicos (4,38\%), resíduos e sucata de metais ferrosos (2,08\%), ácidos (1,76\%), geradores elétricos (1,76\%), tecidos (1,36\%), inseticidas (1,35\%) e demais produtos (40,55\%). Podemos notar que as importações cearenses são bem diversificadas, isso é mostrado no percentual dedicado a produtos diversos que não estão no top 10.  A maioria dos produtos citados tiveram um aumento na participação das importações no ano de 2021, com exceção para gás natural (-44,04\%), resíduos e sucata de metais ferrosos (-78,62\%) e inseticidas (-45,70\%).
+
+Os principais países de origem dessas importações no ano de 2019 foram os Estados Unidos (29,76\%), China (17,58\%), Argentina (7,75\%), Colômbia (5,57\%), Rússia (3,40\%). Os demais países representaram 35,94\% do total de importações do estado. Já no ano de 2021, todos os países aumentaram a participação no leque de importações cearenses, destacando-se China e Colômbia que aumentaram sua participação em 125,59\% e 182,05\% no período analisado, respectivamente. 
+
+As Tabelas \ref{tab21} e \ref{tab22} resumem a performance do estado em termos de exportação e importação para os anos e países citados.
+
+\begin{table}[!htbp] \centering 
+  \caption{Dinâmica das Exportações Cearenses (Países)} 
+  \label{tab21} 
+  \scalebox{0.85}{%
+\begin{tabular}{@{\extracolsep{5pt}} lccccc} 
+\hline \\[-1.8ex] 
+País & US\$  & Participação (\%)  & US\$  & Participação (\%) & Variação Pecentual \\ 
+ & 2019 &  2019 & 2021 & 2021 & (2021/2019) \\ 
+\hline \\[-1.8ex] 
+Estados Unidos & 1013936182 & 44.56\% & 1457591909 & 53.21\% & 43.76\% \\ 
+México & 169132245 & 7.43\% & 367196974 & 13.41\% & 117.11\% \\ 
+Coreia do Sul & 129229190 & 5.68\% & 82782145 & 3.02\% & -35.94\% \\ 
+Itália & 121820481 & 5.35\% & 38941170 & 1.42\% & -68.03\% \\ 
+Alemanha & 65387859 & 2.87\% & 28735374 & 1.05\% & -56.05\% \\ 
+Demais Países & 775686817 & 34.09\% & 763855064 & 27.89\% & -1.53\% \\ 
+Ceará (Todos os países) & 2275192774 & 100.00\% & 2739102636 & 100.00\% & 20.39\% \\ 
+\hline
+\end{tabular}}
+\begin{flushleft}
+\footnotesize Fonte: COMEX
+\end{flushleft}
+\end{table} 
+
+\begin{table}[!htbp] \centering 
+  \caption{Dinâmica das Importações Cearenses (Países)} 
+  \label{tab22} 
+  \scalebox{0.85}{%
+\begin{tabular}{@{\extracolsep{5pt}} lccccc} 
+\hline
+País & US\$  & Participação (\%)  & US\$  & Participação (\%) & Variação Pecentual \\ 
+ & 2019 &  2019 & 2021 & 2021 & (2021/2019) \\ 
+\hline \\[-1.8ex] 
+Estados Unidos & 701670230 & 29.76\% & 1051772629 & 27.18\% & 49.90\% \\ 
+China & 414466058 & 17.58\% & 935013263 & 24.16\% & 125.59\% \\ 
+Argentina & 182681249 & 7.75\% & 253869574 & 6.56\% & 38.97\% \\ 
+Colômbia & 131277779 & 5.57\% & 370271441 & 9.57\% & 182.05\% \\ 
+Rússia & 80232592 & 3.40\% & 108319788 & 2.80\% & 35.01\% \\ 
+Demais Países & 847214334 & 35.94\% & 1151117498 & 29.74\% & 35.87\% \\ 
+Ceará (Todos os países) & 2357542242 & 100.00\% & 3870364193 & 100.00\% & 64.17\% \\ 
+\hline
+\end{tabular}}
+\begin{flushleft}
+\footnotesize Fonte: COMEX
+\end{flushleft}
+\end{table} 
+
+
+\end{prob}
+
+\newpage
+
+	\begin{center}
+		{\Large{\textbf{Case 1 - Vaga: Pesquisador Credenciado}}}\\
+		\vspace{0.2cm}
+		Assunto: Em relação ao Índice FIEC de Inovação dos Estados de 2021, discorra sobre o desempenho do estado do Ceará em relação aos demais estados do Nordeste.\\
+		Candidato: Rafael Vetromille
+	\end{center}
+	
+	
+	\begin{prob} 
+	
+	O Índice FIEC de Inovação dos Estados 2021 é um índice composto que engloba um conjunto de 22 sub-indicadores que formam ao total 12 indicadores divididos em duas áreas: Capacidades e Resultados. Em relação ao Índice Capacidades, ele mede sete aspectos centrais: investimento público em ciência e tecnologia; capital humano - graduação; capital humano - pós-graduação; inserção de mestres e doutores; instituições; infraestrutura e, por fim, cooperação. Já o Índice de Resultados é formado por cinco sub-indicadores: competitividade global; intensidade tecnológica; propriedade intelectual; produção científica e, por fim, empreendedorismo. 
+	
+	Especificamente em relação ao Ceará, o estado ocupa o 11º lugar no Índice FIEC de Inovação dos Estados 2021, assumindo a 9ª posição no Índice de Capacidades e 14ª posição no índice de Resultados. Dentro da região nordeste, o estado ocupa o 2º lugar no Índice FIEC, ficando apenas atrás de Pernambuco. Se compararmos ao ano anterior (2020), o estado manteve-se na mesma posição tanto no ranking nacional como no regional.
+	
+	Mais especificamente no Índice de Capacidades, o estado do Ceará além de ocupar a 9ª posição no ranking nacional, é o líder na região nordeste. Agora, desagregando o Índice de Capacidades em sub-indicadores, temos a seguinte configuração: em investimento público em ciência e tecnologia, o estado ocupa a 10ª colocação nacional e 3ª posição no ranking regional, atrás de Piauí e Alagoas; em capital humano - graduação, o estado está na 11ª posição no ranking nacional e em 4º na região nordeste, ficando atrás da Paraíba, Sergipe e Rio Grande do Norte; já no quesito capital humano - pós-graduação, o estado está em 9º no ranking nacional e 2º dentro dos estados do nordeste, ficando atrás apenas de Pernambuco; no sub-indicador inserção de mestres e doutores, o estado ocupa a 11ª posição nacional e mantém o 2º lugar dentro do nordeste. Nos sub-indicadores instituições e infraestrutura, o estado se destaca ocupando a 7ª posição nacional e lidera o ranking no nordeste, em ambos. Por fim, no último sub-indicador de cooperação, o Ceará ocupa a 17ª posição no ranking nacional e a 3ª posição dentro dos estados do nordeste, atrás apenas de Rio Grande do Norte e Pernambuco. Percebe-se então uma forte presença do Ceará entre os principais estados do nordeste.
+	
+	Já no índice de resultados,  a configuração fica da seguinte forma: no quesito  competitividade global, o estado ocupa o 19º lugar no ranking nacional e 5º no ranking formado pelos estados do nordeste; já no sub-indicador intensidade tecnológica, o Ceará está em 11º lugar no ranking nacional e 2º lugar no ranking nordestino; em propriedade intelectual, o estado ocupa a 14ª posição no ranking nacional e aparece em 4º entre os estados do nordeste; agora em produção científica, o estado ocupa a  10ª posição nacional e o 3º lugar dentro do nordeste. Por fim, no item empreendedorismo, o estado mostra-se na 13ª posição no ranking nacional e 5º no ranking lugar regional. Novamente, o estado do Ceará figura entre os principais estados do nordeste nesse indicador.
+	
+	\end{prob}
+
+
+\end{document}
